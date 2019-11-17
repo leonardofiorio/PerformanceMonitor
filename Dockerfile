@@ -1,4 +1,4 @@
-FROM python:3.8.0-buster
+FROM python:3.8.0
 
 MAINTAINER = "Leonardo Fiório"
 
@@ -6,4 +6,6 @@ WORKDIR /app
 
 COPY . . 
 
-CMD python app.py
+RUN pip install requests				
+
+CMD python -u app.py
