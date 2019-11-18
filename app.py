@@ -1,5 +1,9 @@
-import time, requests
+import time
+import requests
+import csv
+from datetime import datetime
 
+#
 link = 'https://desafioperformance.b2w.io/bairros'
 
 # Status code lists 
@@ -11,27 +15,46 @@ list_codes_4xx = [400,401,402,403,404,405,406,407,408,
 list_codes_5xx = [500,501,502, 503,504,505,506,507,508,
                   510,511] 
 
-# Quantities  
-qtt_2xx = 0
-qtt_4xx = 0
-qtt_5xx = 0
 
+def write_file(t, qtt_2xx, qtt_4xx, qtt_5xx):
+	with open('output.csv', mode='a') as csvFile:
+		writer = csv.writer(csvFile,delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+		print("DENTRO DA FUNCAO")
+		print("Quantity 2XX ", qtt_2xx)
+		print("Quantity 4XX ", qtt_4xx)
+		print("Quantity 5XX ", qtt_5xx)
+
+
+		writer.writerow([t,qtt_2xx,qtt_4xx,qtt_5xx])
+
+	csvFile.close()
 
 
 if __name__ == '__main__':
 
-
 	while True: 
 		
+		timestamp = datetime.timestamp(datetime.now())
 		begin_time = time.time()
 		end_time = begin_time + 60
 
-		while time.time() < end_time:
-			print("GET Request...")
-			status_code = requests.get(link).status_code
+		qtt_2xx = 0
+		qtt_4xx = 0
+		qtt_5xx = 0
 
-			print("Status code: ")
-			print(status_code)
+
+		while time.time() < end_time:
+
+			print("GET Request...")
+
+			try:
+				status_code = requests.get(link).status_code
+
+				print("Status code: ")
+				print(status_code)		
+			except requests.ConnectionError as e:
+				print("Connection Error")
 
 			found = False
 
@@ -61,8 +84,7 @@ if __name__ == '__main__':
 			time.sleep(2)
 
 
-			print("------------------------")
-			print("Quantity 2XX ", qtt_2xx)
-			print("Quantity 4XX ", qtt_4xx)
-			print("Quantity 5XX ", qtt_5xx)
-			print("Encerrando...")
+		write_file(timestamp,qtt_2xx,qtt_4xx,qtt_5xx)
+
+		
+	print("Shutting down...")
