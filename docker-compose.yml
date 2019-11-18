@@ -6,3 +6,5 @@ services:
     command: python -u app.py
     volumes:
       - .:/app
+    environment:
+      TZ: America/Sao_Paulo

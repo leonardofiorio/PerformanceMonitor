@@ -36,7 +36,7 @@ def add_status_code(status_code, qtt):
 	                  510,511] 
 
 	found = False
-	
+
 	i = 0
 	while( (not found) and i < len(list_codes_2xx)):
 		if status_code == list_codes_2xx[i]:
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
 	while True: 
 		
-		timestamp = datetime.timestamp(datetime.now())
+		timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
 		begin_time = time.time()
 		end_time = begin_time + 60
 
